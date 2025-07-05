@@ -3,7 +3,7 @@
 HCL Commands
 
 provider "aws"{
- region = "us-east-2"
+region = "us-east-2"
  access_key = ""
  secret_key = ""
 }
@@ -30,7 +30,8 @@ Tasks To Be Performed:
 terraform destroy
 
 provider "aws"{
- region = "us-east-2"
+alias  = "another"  
+region = "us-east-2"
  access_key = ""
  secret_key = ""
 }
