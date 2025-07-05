@@ -1,0 +1,158 @@
+1. Create an EC2 service in the default subnet in the Ohio region
+
+HCL Commands
+
+provider "aws"{
+ region = "us-east-2"
+ acess_key = "  "
+ secret_key = "  "
+}
+
+resource "aws_instance" "instance"{
+ ami              = "      "
+ instance_type = "  "
+ tag ={
+ Name = "  "
+ }
+}
+
+terraform init
+terraform validate
+terraform plan
+terraform apply
+
+=========================================================================================
+
+Tasks To Be Performed:
+1. Destroy the previous deployment
+2. Create a new EC2 instance with an Elastic IP
+
+terraform destroy
+
+provider "aws"{
+ region = "us-east-2"
+ acess_key = "  "
+ secret_key = "  "
+}
+
+resource "aws_instance" "instance"{
+ ami              = "      "
+ instance_type = "  "
+ tag ={
+ Name = "  "
+ }
+}
+
+resource "aws_eip" "lb" {
+  instance = aws_instance.instance.id
+}
+
+=========================================================
+
+
+Tasks To Be Performed:
+1. Destroy the previous deployment
+2. Create 2 EC2 instances in Ohio and N.Virginia respectively
+3. Rename Ohio’s instance to ‘hello-ohio’ and Virginia’s instance to
+‘hello-virginia’
+
+
+terraform destroy
+
+provider "aws"{
+ region = "us-east-1"
+ acess_key = "  "
+ secret_key = "  "
+}
+
+resource "aws_instance" "instance"{
+ ami              = "      "
+ instance_type = "  "
+ tag ={
+ Name = "Hello-Virginia  "
+ }
+}
+
+provider "aws"{
+ region = "us-east-2"
+ acess_key = "  "
+ secret_key = "  "
+}
+
+resource "aws_instance" "instance"{
+ ami              = "      "
+ instance_type = "  "
+ tag ={
+ Name = "Hello Ohio  "
+ }
+}
+
+===============================================================
+
+
+Tasks To Be Performed:
+1. Destroy the previous deployments
+2. Create a VPC with the required components using Terraform
+3. Deploy an EC2 instance inside the VPC
+
+
+terraform destroy
+
+provider "aws" {
+  region = "us-east-1"  
+}
+
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
+
+  tags = {
+    Name = "main-vpc"
+  }
+}
+
+resource "aws_subnet" "public" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a" 
+  tags = {
+    Name = "public-subnet"
+  }
+}
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "main-igw"
+  }
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name = "public-route-table"
+  }
+}
+
+resource "aws_route_table_association" "public" {
+  subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.public.id
+}
+
+
+resource "aws_instance" "web" {
+  ami           = "   "
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.public.id
+
+  tags = {
+    Name = "web-instance"
+  }
+
+==============================================================
