@@ -111,7 +111,7 @@ output "virginia_instance_id" {
 ===============================================================
 
 
-Tasks To Be Performed:
+4Q.Tasks To Be Performed:
 1. Destroy the previous deployments
 2. Create a VPC with the required components using Terraform
 3. Deploy an EC2 instance inside the VPC
@@ -175,5 +175,6 @@ resource "aws_instance" "web" {
   tags = {
     Name = "web-instance"
   }
+}
 
 ==============================================================
