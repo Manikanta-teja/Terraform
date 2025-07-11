@@ -30,23 +30,26 @@ Tasks To Be Performed:
 terraform destroy
 
 provider "aws"{
-alias  = "another"  
 region = "us-east-2"
  access_key = ""
  secret_key = ""
 }
 
-resource "aws_instance" "instance"{
+resource "aws_instance" "ohio-instance"{
  ami              = ""
- instance_type = ""
+ instance_type = "t2.micro"
  tags ={
- Name = ""
+ Name = "hello"
  }
 }
 
 resource "aws_eip" "lb" {
-  instance = aws_instance.instance.id
+  instance = aws_instance.ohio-instance.id
 }
+
+terraform init
+terraform plan
+terraform apply
 
 =========================================================
 
