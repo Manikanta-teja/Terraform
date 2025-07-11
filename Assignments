@@ -69,7 +69,7 @@ provider "aws"{
  secret_key = ""
 }
 
-resource "aws_instance" "instance"{
+resource "aws_instance" "Virginia_instance"{
  ami              = ""
  instance_type = ""
  tags ={
@@ -83,7 +83,7 @@ provider "aws"{
  secret_key = ""
 }
 
-resource "aws_instance" "instance"{
+resource "aws_instance" "Ohio_instance"{
  ami              = ""
  instance_type = ""
  tag ={
