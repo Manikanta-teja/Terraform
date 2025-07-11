@@ -23,7 +23,7 @@ terraform apply
 
 =========================================================================================
 
-Tasks To Be Performed:
+2Q.Tasks To Be Performed:
 1. Destroy the previous deployment
 2. Create a new EC2 instance with an Elastic IP
 
@@ -54,7 +54,7 @@ terraform apply
 =========================================================
 
 
-Tasks To Be Performed:
+3Q.Tasks To Be Performed:
 1. Destroy the previous deployment
 2. Create 2 EC2 instances in Ohio and N.Virginia respectively
 3. Rename Ohio’s instance to ‘hello-ohio’ and Virginia’s instance to
@@ -63,33 +63,50 @@ Tasks To Be Performed:
 
 terraform destroy
 
-provider "aws"{
- region = "us-east-1"
- access_key = ""
- secret_key = ""
+ provider "aws" {
+  region     = "us-east-2"  # Ohio
+  access_key = ""
+  secret_key = ""
+  alias      = "ohio"
 }
 
-resource "aws_instance" "Virginia_instance"{
- ami              = ""
- instance_type = ""
- tags ={
- Name = "Hello-Virginia"
- }
+provider "aws" {
+  region     = "us-east-1"  # N. Virginia
+  access_key = ""
+  secret_key = ""
+  alias      = "virginia"
 }
 
-provider "aws"{
- region = "us-east-2"
- access_key = ""
- secret_key = ""
+resource "aws_instance" "hello_ohio" {
+  provider          = aws.ohio
+  ami               = ""
+  instance_type     = "t2.micro"
+  availability_zone = "us-east-2a"
+
+  tags = {
+    Name = "hello-ohio"
+  }
 }
 
-resource "aws_instance" "Ohio_instance"{
- ami              = ""
- instance_type = ""
- tag ={
- Name = "Hello Ohio"
- }
+resource "aws_instance" "hello_virginia" {
+  provider          = aws.virginia
+   ami               = ""
+  instance_type     = "t2.micro"
+  availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "hello-virginia"
+  }
 }
+
+output "ohio_instance_id" {
+  value = aws_instance.hello_ohio.id
+}
+
+output "virginia_instance_id" {
+  value = aws_instance.hello_virginia.id
+}
+
 
 ===============================================================
 
